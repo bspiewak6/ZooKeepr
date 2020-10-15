@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { filterByQuery, findById, createNewAnimal, validateAnimal } = require('../../lib/zookeepers');
+const { filterByQuery, findById, createNewZookeeper, validateZookeeper } = require('../../lib/zookeepers');
 const { zookeepers } = require('../../data/zookeepers');
 
 router.get('/zookeepers', (req, res) => {
@@ -24,10 +24,10 @@ router.post('/zookeepers', (req, res) => {
     req.body.id = zookeepers.length.toString();
 
     // if any data in req.body is incorrect, send 400 error back
-    if (!validateZookeepers(req.body)) {
+    if (!validateZookeeper(req.body)) {
         res.status(400).send('The zookeeper is not properly formatted.');
     } else {
-        const zookeeper = createNewAnimal(req.body, zookeepers);
+        const zookeeper = createNewZookeeper(req.body, zookeepers);
         res.json(zookeeper);
     }
 });
