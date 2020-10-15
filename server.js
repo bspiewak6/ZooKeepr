@@ -5,6 +5,8 @@ const { animals } = require('./data/animals');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
+// use express.static to link up the files that were provided by client
+app.use(express.static('public'));
 // parse incoming string or array data
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
@@ -68,15 +70,19 @@ function createNewAnimal(body, animalsArray) {
 // if not return false and not create animal data
 function validateAnimal(animal) {
     if (!animal.name || typeof animal.name !== 'string') {
+        // console.log('failed name');
       return false;
     }
     if (!animal.species || typeof animal.species !== 'string') {
+        // console.log('failed species');
       return false;
     }
     if (!animal.diet || typeof animal.diet !== 'string') {
+        // console.log('failed diet');
       return false;
     }
     if (!animal.personalityTraits || !Array.isArray(animal.personalityTraits)) {
+        // console.log('failed traits');
       return false;
     }
     return true;
@@ -118,9 +124,20 @@ app.post('/api/animals', (req, res) => {
     }
 });
 
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
+app.get('/zookeepers', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+});
+
+app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname,'./public/animals.html'));
+});
+
 
 
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
 });
-
